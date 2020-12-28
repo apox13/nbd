@@ -1,0 +1,8 @@
+.test-chapter .card {
+    border: none !important;
+}
+
+.test-chapter .card-header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #2A5B98 !important;
+}

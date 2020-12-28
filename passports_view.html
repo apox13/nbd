@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form.IO</title>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
+    <style>
+        .no-label label {
+            display: none;
+        }
+
+        .table thead th {
+            border-bottom: none !important;
+        }
+
+        .th-label {
+            color: #2A5B98 !important;
+            margin-right: 30px;
+        }
+
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 10px 0;
+        }
+
+        .th-center {
+            text-align: center;
+            color: #2A5B98;
+        }
+
+        .max-content .table {
+            width: max-content;
+        }
+
+        .th, th {
+            border-top: 1px solid #2A5B98 !important;
+            border-radius: 0;
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 19px;
+            text-align: center;
+            border-spacing: 15px 0 !important;
+            color: #2A5B98;
+        }
+
+        .passport-chapter .card {
+            border: none !important;
+        }
+
+        .passport-chapter .card-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #2A5B98 !important;
+        }
+
+        .passport-chapter .card-title {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 21px;
+            color: #020202;
+        }
+
+        .passport-chapter .col-form-label {
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 19px;
+            color: #2A5B98;
+        }
+
+        .passport-table {
+            overflow-y: hidden;
+        }
+
+        .passport-chapter .datagrid-table {
+            border: none;
+        }
+
+        .passport-table1 .table {
+            width: max-content;
+        }
+
+        .table td, .table th {
+            border: none
+        }
+    </style>
+</head>
+<body>
+<script>
+    let showForm = function (jsonUrl, id) {
+        Formio.icons = 'fontawesome';
+        Formio.createForm(document.getElementById('formio'), jsonUrl, {
+                hooks: {
+                    beforeSubmit: (submission, next) => {
+                        // Alter the submission
+                        console.log(submission.data)
+                        alert('view data sample in console')
+                        // Only call next when we are ready.
+                        //next();
+                    }
+                }
+            }
+        ).then(function (form) {
+            // Defaults are provided as follows.
+            form.submission = {};
+
+            // Register for the submit event to get the completed submission.
+            form.on('submit', function (submission) {
+                console.log('Submission was made!', submission);
+            });
+
+            // Everytime the form changes, this will fire.
+            form.on('change', function (changed) {
+                console.log('Form was changed', changed);
+            });
+
+            window.setLanguage = function (lang) {
+                form.language = lang;
+            };
+            document.getElementById('loadinfo').innerHTML = '<span style="color: green">' + id  + '</span>'
+        });
+    }
+    let changeForm = function (id){
+        let passports = {
+            "passportB": 'https://phvqyinqhkhyrpz.form.io/pasportb?_ga=2.232253016.616049145.1608704871-1477217882.1605264073',
+            "passportV": 'https://phvqyinqhkhyrpz.form.io/pasportd?_ga=2.222670172.616049145.1608704871-1477217882.1605264073',
+            "passportD": 'https://phvqyinqhkhyrpz.form.io/pasportv?_ga=2.127847754.616049145.1608704871-1477217882.1605264073',
+            "passportE": 'https://phvqyinqhkhyrpz.form.io/passporte?_ga=2.23121533.616049145.1608704871-1477217882.1605264073',
+            "passportI": 'https://phvqyinqhkhyrpz.form.io/pasporti?_ga=2.232694232.616049145.1608704871-1477217882.1605264073',
+            "passportG": 'https://phvqyinqhkhyrpz.form.io/passportg?_ga=2.156601724.616049145.1608704871-1477217882.1605264073',
+        }
+        console.log(passports[id])
+        document.getElementById('loadinfo').innerHTML = '<span style="color: red">  loading... </span>'
+        showForm(passports[id], id)
+        localStorage.setItem('passportId', id)
+        // alert('loading... ' + id)
+    }
+</script>
+
+<div class="container-fluid">
+    <input value="Паспорт Б" onclick="changeForm('passportB')" type="button">
+    <input value="Паспорт В" onclick="changeForm('passportV')" type="button">
+    <input value="Паспорт Г" onclick="changeForm('passportG')" type="button">
+    <input value="Паспорт Д" onclick="changeForm('passportD')" type="button">
+    <input value="Паспорт Е" onclick="changeForm('passportE')" type="button">
+    <input value="Паспорт И" onclick="changeForm('passportI')" type="button">
+    <span id="loadinfo"></span>
+    <div class="row">
+        <div class="col-12">
+            <div id='formio'></div>
+        </div>
+    </div>
+</div>
+<script src='https://unpkg.com/formiojs@latest/dist/formio.full.min.js'></script>
+<!--<script src='./pasportB.js'></script>-->
+<script>
+
+</script>
+<script type='text/javascript'>
+    //debugger
+    window.onload = function () {
+        let passportId = localStorage.getItem('passportId')
+        if (passportId) {
+            changeForm(passportId)
+        } else {
+            changeForm('passportB')
+            //showForm('https://phvqyinqhkhyrpz.form.io/pasportb?_ga=2.232253016.616049145.1608704871-1477217882.1605264073');
+        }
+    };
+</script>
+</body>
+</html>
